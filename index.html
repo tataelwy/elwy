@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار معلومات</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>اختبار معلومات</h1>
+<p id="question">السؤال سيظهر هنا</p>
+<div id="options"></div>
+<button id="nextButton" style="display:none;" onclick="nextQuestion()">السؤال التالي</button>
+<div id="message"></div>
+
+<script>
+    const questions = [
+        {
+            question: "ما هو أكبر كوكب في النظام الشمسي؟",
+            options: ["الأرض", "المريخ", "المشتري", "زحل"],
+            answer: "المشتري"
+        },
+        {
+            question: "ما هو أطول نهر في العالم؟",
+            options: ["نهر الأمازون", "نهر النيل", "نهر المسيسيبي", "نهر اليانغتسي"],
+            answer: "نهر النيل"
+        },
+        {
+            question: "ما هي عاصمة فرنسا؟",
+            options: ["باريس", "لندن", "مدريد", "برلين"],
+            answer: "باريس"
+        },
+        {
+            question: "من هو مؤلف رواية '1984'؟",
+            options: ["جورج أورويل", "ألدوس هكسلي", "مارك توين", "إرنست همنغواي"],
+            answer: "جورج أورويل"
+        },
+        {
+            question: "ما هو العنصر الكيميائي الذي يرمز له بـ 'O'؟",
+            options: ["الأكسجين", "الهيدروجين", "الكربون", "النيتروجين"],
+            answer: "الأكسجين"
+        },
+        {
+            question: "ما هي أكبر قارة في العالم؟",
+            options: ["أفريقيا", "آسيا", "أوروبا", "أمريكا الشمالية"],
+            answer: "آسيا"
+        },
+        {
+            question: "ما هو اسم أول إنسان سار على سطح القمر؟",
+            options: ["نيل أرمسترونغ", "باز ألدرين", "يوري غاغارين", "مايكل كولينز"],
+            answer: "نيل أرمسترونغ"
+        },
+        {
+            question: "ما هي اللغة الأكثر تحدثًا في العالم؟",
+            options: ["الإنجليزية", "الصينية", "الإسبانية", "العربية"],
+            answer: "الصينية"
+        },
+        {
+            question: "ما هو الحيوان الذي يُعتبر أذكى حيوان في العالم؟",
+            options: ["الدلافين", "القرود", "الفيلة", "الكلاب"],
+            answer: "الدلافين"
+        },
+        {
+            question: "ما هو أكبر محيط في العالم؟",
+            options: ["المحيط الأطلسي", "المحيط الهادئ", "المحيط الهندي", "المحيط المتجمد الشمالي"],
+            answer: "المحيط الهادئ"
+        },
+        {
+            question: "ما هو اسم أكبر صحراء في العالم؟",
+            options: ["صحراء الكبرى", "صحراء ساهارا", "صحراء أتاكاما", "صحراء جوب"],
+            answer: "صحراء ساهارا"
+        },
+        {
+            question: "من هو الفنان الذي رسم لوحة الموناليزا؟",
+            options: ["فان جوخ", "بيكاسو", "دافنشي", "مونيه"],
+            answer: "دافنشي"
+        },
+        {
+            question: "ما هو اسم أكبر دولة في العالم؟",
+            options: ["الصين", "الولايات المتحدة", "روسيا", "كندا"],
+            answer: "روسيا"
+        },
+        {
+            question: "ما هو اسم أول حيوان تم استنساخه؟",
+            options: ["دولي", "بقرة", "خروف", "كلب"],
+            answer: "دولي"
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    function loadQuestion() {
+        const currentQuestion = questions[currentQuestionIndex];
+        document.getElementById('question').innerText = currentQuestion.question;
+        const optionsDiv = document.getElementById('options');
+        optionsDiv.innerHTML = ''; // مسح الخيارات السابقة
+
+        currentQuestion.options.forEach(option => {
+            const button = document.createElement('button');
+            button.innerText = option;
+            button.onclick = () => checkAnswer(option);
+            optionsDiv.appendChild(button);
+        });
+    }
+
+    function checkAnswer(selectedOption) {
+        const currentQuestion = questions[currentQuestionIndex];
+        const messageDiv = document.getElementById('message');
+
+        if (selectedOption === currentQuestion.answer) {
+            messageDiv.innerText = "مبروك! إجابة صحيحة!";
+        } else {
+            messageDiv.innerText = "خطأ! الإجابة الصحيحة هي: " + currentQuestion.answer;
+        }
+        
+        document.getElementById('nextButton').style.display = 'block'; // إظهار زر السؤال التالي
+    }
+
+    function nextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+            document.getElementById('message').innerText = ''; // مسح الرسالة السابقة
+            document.getElementById('nextButton').style.display = 'none'; // إخفاء زر السؤال التالي
+        } else {
+            document.getElementById('question').innerText = "انتهى الاختبار!";
+            document.getElementById('options').innerHTML = '';
+            document.getElementById('nextButton').style.display = 'none';
+        }
+    }
+
+    // تحميل السؤال الأول عند بدء اللعبة
+    loadQuestion();
+</script>
+
+</body>
+</html>
